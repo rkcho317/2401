@@ -44,28 +44,21 @@
 
 
 #include <iostream>
-#include <string>
+#include <stdint.h>
+#include <cstring>
 #include <stdio.h>
+#include <iomanip>
+#include <math.h>
 
 extern "C" double array_tools(double *, long);
 
-int main(){
-  std::cout<<"Welcome to assignment 1: perimeters and averages."<<std::endl;
-  std::cout<<"This program will compute the perimeter and the average side length of a rectangle."<<std::endl;
-  std::cout<<"Enter the height: "<<std::endl;
-  std::cin>>h;
+int main(int argc, char* argv[]){
 
-  std::cout<<"Enter the width: "<<w<<std:endl;
-  std::cin>>w;
+  printf("%s\n","Welcome to assignment 1: perimeters and averages.");
+  printf("%s\n","This program will compute the perimeter and the average side length of a rectangle.");
 
-  std::cout<<"The perimeter is " <<peri<<std:endl;
-  std::cout<<"The length of the average side is " <<avgl<<std:endl;
+  printf("%s\n","Have a nice day.");
 
-  std::cout<<"I hope you enjoyed your rectangle " <<std:endl;
-  std::cout<<"The assembly program will send the perimeter to the main function. " <<std:endl;
-  std::cout<<"The main function received this number  and has decided to keep it. " <<std:endl;
-  std::cout<<"A 0 will be returned to the operating system. " <<std:endl;
-  std::cout<<"Have a nice day."<<std::endl;
 } //end of main
 
 //=======1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6**

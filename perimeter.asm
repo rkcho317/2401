@@ -72,16 +72,45 @@
 ;========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6=========7**
 ;
 ;===== Begin code area ====================================================================================================================================================
-;%include "savedata.inc"                                     ;Not used in this program.  External macros that assist in data backup.
-
-;%include "debug.inc"                                        ;Not now in use.  The debug tool was used during the development stages of this program.
 
 extern printf                                               ;External C++ function for writing to standard output device
 
 extern scanf                                                ;External C++ function for reading from the standard input device
 
-global array_tools
+global perimeter_tools                                      ;Set Global perimeter_tools variables
+
+segment .data
 
 ;===== Declare some messages ==============================================================================================================================================
 ;The identifiers in this segment are quadword pointers to ascii strings stored in heap space.  They are not variables.  They are not constants.  There are no constants in
 ;assembly programming.  There are no variables in assembly programming: the registers assume the role of variables.
+
+perimeter_tools.initialmessage db "The X86 subprogram is now executing.", 10, 0
+
+inputheightprompt db "Enter the height: ", 10, 0
+
+inputwidthprompt db "Enter the width: ", 10, 0
+
+outputperiprompt db "The perimeter is: ", 0
+
+outputavelprompt db "The length of the average side is: ", 0
+
+outputhopeprompt db "I hope you enjoyed your rectangle", 0
+
+outputsendmainprompt db "The assembly program will send the perimeter to the main function.", 0
+
+outputmainrecprompt db "The main function received this number  and has decided to keep it. ", 0
+
+outputreturn0prompt db "A 0 will be returned to the operating system.", 0
+
+segment .bss
+
+segment .text
+
+;==========================================================================================================================================================================
+;===== Begin the application here: show how to input and output floating point numbers ====================================================================================
+;==========================================================================================================================================================================
+
+segment .text
+
+perimeter_tools:
