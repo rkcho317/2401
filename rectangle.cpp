@@ -47,6 +47,7 @@
 #include <string>
 #include <stdio.h>
 
+extern "C" double array_tools(double *, long);
 
 int main(){
   std::cout<<"Welcome to assignment 1: perimeters and averages."<<std::endl;
