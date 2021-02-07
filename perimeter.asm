@@ -85,32 +85,132 @@ segment .data
 ;The identifiers in this segment are quadword pointers to ascii strings stored in heap space.  They are not variables.  They are not constants.  There are no constants in
 ;assembly programming.  There are no variables in assembly programming: the registers assume the role of variables.
 
-perimeter_tools.initialmessage db "The X86 subprogram is now executing.", 10, 0
+initialmessage db "The X86 subprogram is now executing.", 10, 0
 
 inputheightprompt db "Enter the height: ", 10, 0
 
 inputwidthprompt db "Enter the width: ", 10, 0
 
-outputperiprompt db "The perimeter is: ", 0
+output_peri db "The perimeter is: %5.3lf",10, 0
 
-outputavelprompt db "The length of the average side is: ", 0
+output_avel db "The length of the average side is: %5.3lf ", 10, 0
 
-outputhopeprompt db "I hope you enjoyed your rectangle", 0
+outputhopeprompt db "I hope you enjoyed your rectangle", 10, 0
 
 outputsendmainprompt db "The assembly program will send the perimeter to the main function.", 0
 
 outputmainrecprompt db "The main function received this number  and has decided to keep it. ", 0
 
-outputreturn0prompt db "A 0 will be returned to the operating system.", 0
+goodbyeprompt db "A 0 will be returned to the operating system.", 0
 
-segment .bss
+height_float db "%lf",0
 
-segment .text
+width_float db "%lf",0
+
+peri_float db "%lf",0
+
+avel_float db "%lf",0
+
+segment .bss                            ;Reserved for uninitialized data
+
+segment .text                           ;Reserved for executing instructions.
 
 ;==========================================================================================================================================================================
 ;===== Begin the application here: show how to input and output floating point numbers ====================================================================================
 ;==========================================================================================================================================================================
 
-segment .text
-
 perimeter_tools:
+
+push rbp
+mov rbp,rsp
+push rdi
+push rsi
+push rdx
+push rcx
+push r8
+push r9
+push r10
+push r11
+push r12
+push r13
+push r14
+push r15
+push rbx
+pushf
+
+push qword 0
+
+;Display welcome messages
+mov rax, 0
+mov rdi, initialmessage
+call printf
+pop rax
+
+push qword 0
+
+;Display input prompt for height
+mov rax, 0
+mov rdi, inputheightprompt  ;"Enter height"
+call printf
+pop rax
+
+;Enter the input for height
+push qword -1
+mov rax, 0
+mov rdi, height_float
+mov rsi, rsp
+call scanf
+movsd xmm 10, [rsp]
+
+;Display input prompt for width
+mov rax, 0
+mov rdi, inputwidthprompt ;"Enter width"
+call printf
+pop rax;
+
+;Enter the input for width
+push qword -2
+mov rax, 0
+mov rdi, width_float
+mov rsi, rsp
+call scanf
+movsd xmm 10, [rsp]
+
+;==Calculate Perimeter==
+;Add length to width
+mov r12,0
+push qword 0
+movsd xmm8, [rsp]
+
+add r12, r11
+mov rsi
+mul 2, rsi
+mov rdi, output_peri
+pop rax
+
+;==Calculate average length==
+add r12, r11
+div 2, rsi
+mov rdi, output_avel
+pop rax
+
+;Display Goodbye
+mov rax, 0
+mov rdi, outputhopeprompt
+call printf
+pop rax
+
+mov rax,0
+mov rdi, outputsendmainprompt
+call printf
+pop rax
+
+mov rax,0
+mov rdi, outputmainrecprompt
+call printf
+pop rax
+
+mov rax,0
+mov rdi, goodbyeprompt
+call printf
+pop rax
