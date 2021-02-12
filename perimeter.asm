@@ -20,8 +20,8 @@
 ;Program information
 ;  Program name: Array Passing Demonstration
 ;  Programming languages: Main function in C++; array receiving function in X86-64
-;  Date program began: 2020-Jan-31
-;  Date of last update: 2020-Feb-1
+;  Date program began: 2021-Jan-31
+;  Date of last update: 2021-Feb-12
 ;  Comments reorganized:
 ;  Files in the program: rectangle.cpp, perimeter.asm, run.sh
 ;
@@ -29,7 +29,7 @@
 ;
 ;
 ;This file
-;  File name: arrays-x86.asm
+;  File name: perimeter.asm
 ;  Language: X86-64
 ;  Syntax: Intel
 ;  Max page width: 172 columns
@@ -45,7 +45,7 @@
 ;Program information
 ;  Program name: perimeter.asm
 ;  Programming languages: X86 with one module in C++
-;  Date program began: 2020-Jan-1
+;  Date program began: 2021-Jan-31
 ;  Date of last update:
 ;
 ;Purpose
@@ -56,10 +56,8 @@
 ;  Status: Available for public review.
 ;
 ;Translator information
-;  Linux: nasm -f elf64 -l arrays-x86.lis -o arrays-x86.o arrays-x86.asm
+;  Linux: nasm -f elf64 -l perimeter.lis -o perimeter.o perimeter.asm
 ;
-;References and credits
-;  Seyfarth, Chapter 10
 ;
 ;Format information
 ;  Page width: 172 columns
@@ -89,7 +87,9 @@ initialmessage db "The X86 subprogram is now executing.", 10, 0
 
 inputheightprompt db "Enter the height: ", 10, 0
 
-inputwidthprompt db "Enter the width: ", 10, 0
+inputwidthprompt db "Enter the weight: ", 10, 0
+
+outputtestprompt db "Your inputs are height: %5.3lf and width: %5.3lf", 10, 0
 
 output_peri db "The perimeter is: %5.3lf",10, 0
 
@@ -97,120 +97,103 @@ output_avel db "The length of the average side is: %5.3lf ", 10, 0
 
 outputhopeprompt db "I hope you enjoyed your rectangle", 10, 0
 
-outputsendmainprompt db "The assembly program will send the perimeter to the main function.", 0
+outputsendmainprompt db "The assembly program will send the perimeter to the main function.", 10, 0
 
-outputmainrecprompt db "The main function received this number  and has decided to keep it. ", 0
+input_hfloat db "%lf",0
 
-goodbyeprompt db "A 0 will be returned to the operating system.", 0
+input_wfloat db "%lf",0
 
-height_float db "%lf",0
+float2 dq 2.0
 
-width_float db "%lf",0
-
-peri_float db "%lf",0
-
-avel_float db "%lf",0
+float4 dq 4.0
 
 segment .bss                            ;Reserved for uninitialized data
 
 segment .text                           ;Reserved for executing instructions.
 
+perimeter_tools:
 ;==========================================================================================================================================================================
 ;===== Begin the application here: show how to input and output floating point numbers ====================================================================================
 ;==========================================================================================================================================================================
 
-perimeter_tools:
-
-push rbp
-mov rbp,rsp
-push rdi
-push rsi
-push rdx
-push rcx
-push r8
-push r9
-push r10
-push r11
-push r12
-push r13
-push r14
-push r15
-push rbx
-pushf
-
 push qword 0
 
-;Display welcome messages
-mov rax, 0
+;====Display welcome messages====
+mov rax,0
 mov rdi, initialmessage
 call printf
 pop rax
 
+;====Display input prompt for the height====
 push qword 0
-
-;Display input prompt for height
 mov rax, 0
-mov rdi, inputheightprompt  ;"Enter height"
+mov rdi, inputheightprompt
 call printf
 pop rax
 
-;Enter the input for height
+;====Enter the height input===
 push qword -1
 mov rax, 0
-mov rdi, height_float
+mov rdi, input_hfloat
 mov rsi, rsp
 call scanf
-movsd xmm 10, [rsp]
+movsd xmm10, [rsp]
+pop rax
 
-;Display input prompt for width
-mov rax, 0
-mov rdi, inputwidthprompt ;"Enter width"
-call printf
-pop rax;
 
-;Enter the input for width
-push qword -2
-mov rax, 0
-mov rdi, width_float
-mov rsi, rsp
-call scanf
-movsd xmm 10, [rsp]
-
-;==Calculate Perimeter==
-;Add length to width
-mov r12,0
+;====Display input prompt for the width====
 push qword 0
-movsd xmm8, [rsp]
+mov rax, 0
+mov rdi, inputwidthprompt
+call printf
+pop rax
 
-add r12, r11
-mov rsi
-mul 2, rsi
+;====Enter the width input ===
+mov rax, 1
+mov rdi, input_wfloat
+push qword 0
+mov rsi, rsp
+call scanf
+movsd xmm11, [rsp]
+pop rax
+
+;====Calculate Perimeter====
+;Add height to width
+movsd xmm12,xmm10
+addsd xmm12,xmm11
+mulsd xmm12,[float2]
+
+;=====Display the Perimeter====
+push qword -1
+mov rax, 1
 mov rdi, output_peri
+movsd xmm0, xmm12
+call printf
 pop rax
 
-;==Calculate average length==
-add r12, r11
-div 2, rsi
+;====Calculate average length====
+movsd xmm13, xmm12
+divsd xmm13, [float4]
+
+;=====Display the average length====
+push qword 0
+mov rax, 1
 mov rdi, output_avel
+movsd xmm0, xmm13
+call printf
 pop rax
 
-;Display Goodbye
+;===Display Goodbye messages====
+push qword 0
 mov rax, 0
 mov rdi, outputhopeprompt
 call printf
 pop rax
 
-mov rax,0
+push qword 0
+mov rax, 0
 mov rdi, outputsendmainprompt
 call printf
 pop rax
 
-mov rax,0
-mov rdi, outputmainrecprompt
-call printf
-pop rax
-
-mov rax,0
-mov rdi, goodbyeprompt
-call printf
-pop rax
+movsd xmm0, xmm12

@@ -1,7 +1,7 @@
 //****************************************************************************************************************************
-//Program name: "Array Passing Demonstration".  This program demonstrates how to pass an array of floats from a C++ function *
-//to an X86 function, and back.  The X86 function makes changes to the array, and the C++ receives the array with changes    *
-//included.  Copyright (C) 2018  Floyd Holliday                                                                              *
+//Program name: "Rectangle Program".  This program demonstrates how to pass float inputs
+//to an X86 function.  The X86 function makes changes to the inputs, and the C++ receives the value of the perimeter.         *
+// Copyright (C) 2021 Rosa Cho                                                                            *
 //This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License  *
 //version 3 as published by the Free Software Foundation.                                                                    *
 //This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied         *
@@ -18,46 +18,49 @@
 //  Author email: rkcho317@fullerton.edu
 //
 //Program information
-//  Program name: Array Passing Demonstration
-//  Programming languages: Main function in C++; array receiving function in X86-64
-//  Date program began: 2018-Feb-20
-//  Date of last update: 2018-Feb-20
-//  Comments reorganized: 2018-Nov-10
-//  Files in the program: arrays-main.cpp, arrays-x86.asm, run.sh
+//  Program name: Rectangle
+//  Programming languages: Main function in C++; receiving function in X86-64
+//  Date program began: 2021-Jan-31
+//  Date of last update: 2021-Feb-12
+//  Comments reorganized: 2021-Feb-12
+//  Files in the program: rectangle.cpp, perimeter.asm, run.sh
 //
 //Purpose
-//  The intent of this program is to show some of the basic techniques for managing arrays.  Some interesting actions can be seen
-//  here.  You can discover where the C++ driver program stored the values 88.9 and 3.1416.  The action of returning from the X86
-//  function causes the location previously holding 88.9 to change its value.
+//  The intent of this program is to show some of the basic techniques for adding and multiplying float numbers.
 //
 //This file
-//  File name: arrays-main.cpp
+//  File name: rectangle.cpp
 //  Language: C++
-//  Max page width: 132 columns
+//  Max page width: 67 columns
 //  Optimal print specification: 7 point font, monospace, 132 columns, 8½x11 paper
-//  Compile: g++ -c -m64 -Wall -fno-pie -no-pie -l arrays-main.lis -o arrays-main.o arrays-main.cpp
-//  Link: g++ -m64 -fno-pie -no-pie -o array.out arrays-main.o arrays-x86.o
+//  Compile: g++ -c -m64 -Wall -std=c++14 -o rectangle.o -fno-pie -no-pie rectangle.cpp
+//  Link: g++ -m64 -std=c++14 -fno-pie -no-pie -o peri.out rectangle.o perimeter.o
 //
-//Execution: ./arrays.out
+//Execution: ./peri.out
 //
 //===== Begin code area ===================================================================================================================================================
 
 
-#include <iostream>
+#include <ctime>
 #include <stdint.h>
 #include <cstring>
 #include <stdio.h>
-#include <iomanip>
-#include <math.h>
 
-extern "C" double array_tools(double *, long);
+extern "C" double perimeter_tools();
 
 int main(int argc, char* argv[]){
-
+  double peri = 0.0;
   printf("%s\n","Welcome to assignment 1: perimeters and averages.");
-  printf("%s\n","This program will compute the perimeter and the average side length of a rectangle.");
+  printf("%s\n","This program will now compute the perimeter and the average side length of a rectangle.\n");
 
-  printf("%s\n","Have a nice day.");
+  peri = perimeter_tools();
+
+  printf("The main function received this number %5.3lf and has decided to keep it.  \n",peri);
+
+  printf("%s\n", "A 0 will be returned to the operating system.");
+  printf("%s\n", "Have a nice day.");
+
+  return 0;
 
 } //end of main
 
