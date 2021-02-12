@@ -19,7 +19,7 @@
 //
 //Program information
 //  Program name: Rectangle
-//  Programming languages: Main function in C++; receiving function in X86-64
+//  Programming languages: Main function in C++; arithmetic, float input/output functions in X86-64
 //  Date program began: 2021-Jan-31
 //  Date of last update: 2021-Feb-12
 //  Comments reorganized: 2021-Feb-12

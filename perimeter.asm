@@ -18,8 +18,8 @@
 ;  Author email: rkcho317@fullerton.edu
 ;
 ;Program information
-;  Program name: Array Passing Demonstration
-;  Programming languages: Main function in C++; array receiving function in X86-64
+;  Program name: Perimeter and Average Length Calculation
+;  Programming languages: Main function in C++; arithmetic, float input/output functions in X86-64
 ;  Date program began: 2021-Jan-31
 ;  Date of last update: 2021-Feb-12
 ;  Comments reorganized:
@@ -34,7 +34,7 @@
 ;  Syntax: Intel
 ;  Max page width: 172 columns
 ;  Optimal print specification: Landscape, 7-point font, monospace, 172 columns, 8½x11 paper
-;  Assemble: nasm -f elf64 -l arrays-x86.lis -o arrays-x86.o arrays-x86.asm
+;  Assemble: nasm -f elf64 -l perimeter.lis -o perimeter.o perimeter.asm
 ;
 ;========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6=========7**
 ;
@@ -46,7 +46,7 @@
 ;  Program name: perimeter.asm
 ;  Programming languages: X86 with one module in C++
 ;  Date program began: 2021-Jan-31
-;  Date of last update:
+;  Date of last update: 2021-Feb-12
 ;
 ;Purpose
 ;  The intent of this program is to show some of the basic tools or techniques for working with basic math.
