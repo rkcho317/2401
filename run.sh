@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#Author: Floyd Holliday
-#Program name: Array Passing Demonstration
+#Author: Rosa Cho
+#Program name: Rectangle and Perimeter Demo
 
 rm *.o, *.lis, *.out
 echo " " #Blank line

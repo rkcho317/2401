@@ -18,8 +18,8 @@
     18                                  ;  Author email: rkcho317@fullerton.edu
     19                                  ;
     20                                  ;Program information
-    21                                  ;  Program name: Array Passing Demonstration
-    22                                  ;  Programming languages: Main function in C++; array receiving function in X86-64
+    21                                  ;  Program name: Perimeter and Average Length Calculation
+    22                                  ;  Programming languages: Main function in C++; arithmetic, float input/output functions in X86-64
     23                                  ;  Date program began: 2021-Jan-31
     24                                  ;  Date of last update: 2021-Feb-12
     25                                  ;  Comments reorganized:
@@ -34,7 +34,7 @@
     34                                  ;  Syntax: Intel
     35                                  ;  Max page width: 172 columns
     36                                  ;  Optimal print specification: Landscape, 7-point font, monospace, 172 columns, 8½x11 paper
-    37                                  ;  Assemble: nasm -f elf64 -l arrays-x86.lis -o arrays-x86.o arrays-x86.asm
+    37                                  ;  Assemble: nasm -f elf64 -l perimeter.lis -o perimeter.o perimeter.asm
     38                                  ;
     39                                  ;========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6=========7**
     40                                  ;
@@ -46,7 +46,7 @@
     46                                  ;  Program name: perimeter.asm
     47                                  ;  Programming languages: X86 with one module in C++
     48                                  ;  Date program began: 2021-Jan-31
-    49                                  ;  Date of last update:
+    49                                  ;  Date of last update: 2021-Feb-12
     50                                  ;
     51                                  ;Purpose
     52                                  ;  The intent of this program is to show some of the basic tools or techniques for working with basic math.
