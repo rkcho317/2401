@@ -1,239 +1,231 @@
      1                                  ;***************************************************************************************************************************
-     2                                  ;Program name: "Array Passing Demonstration".  This program demonstrates how to pass an array of floats from a C++ function *
-     3                                  ;to an X86 function, and back.  The X86 function makes changes to the array, and the C++ receives the array with changes    *
-     4                                  ;included.  Copyright (C) 2018  Floyd Holliday                                                                              *
-     5                                  ;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License  *
-     6                                  ;version 3 as published by the Free Software Foundation.                                                                    *
-     7                                  ;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied         *
-     8                                  ;warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.     *
-     9                                  ;A copy of the GNU General Public License v3 is available here:  <https://www.gnu.org/licenses/>.                           *
-    10                                  ;****************************************************************************************************************************
+     2                                  ;Program name: "Perimeter.asm".  This program demonstrates how to pass user-inputted floats                         *
+     3                                  ;to an X86 function, and into a C++ main function.   Copyright (C) 2021 Rosa Cho                                                                             *
+     4                                  ;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License  *
+     5                                  ;version 3 as published by the Free Software Foundation.                                                                    *
+     6                                  ;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied         *
+     7                                  ;warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.     *
+     8                                  ;A copy of the GNU General Public License v3 is available here:  <https://www.gnu.org/licenses/>.                           *
+     9                                  ;****************************************************************************************************************************
+    10                                  
     11                                  
     12                                  
-    13                                  
-    14                                  ;========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6=========7**
-    15                                  
-    16                                  ;Author information
-    17                                  ;  Author name: Rosa Cho
-    18                                  ;  Author email: rkcho317@fullerton.edu
-    19                                  ;
-    20                                  ;Program information
-    21                                  ;  Program name: Perimeter and Average Length Calculation
-    22                                  ;  Programming languages: Main function in C++; arithmetic, float input/output functions in X86-64
-    23                                  ;  Date program began: 2021-Jan-31
-    24                                  ;  Date of last update: 2021-Feb-12
-    25                                  ;  Comments reorganized:
-    26                                  ;  Files in the program: rectangle.cpp, perimeter.asm, run.sh
+    13                                  ;========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6=========7**
+    14                                  
+    15                                  ;Author information
+    16                                  ;  Author name: Rosa Cho
+    17                                  ;  Author email: rkcho317@fullerton.edu
+    18                                  ;
+    19                                  ;Program information
+    20                                  ;  Program name: Perimeter and Average Length Calculation
+    21                                  ;  Programming languages: Main function in C++; arithmetic, float input/output functions in X86-64
+    22                                  ;  Date program initiated: 2021-Jan-31
+    23                                  ;  Date last updated: 2021-Feb-12
+    24                                  ;  Files in the program: rectangle.cpp, perimeter.asm, run.sh
+    25                                  ;
+    26                                  ;Purpose
     27                                  ;
-    28                                  ;Purpose
-    29                                  ;
-    30                                  ;
-    31                                  ;This file
-    32                                  ;  File name: perimeter.asm
-    33                                  ;  Language: X86-64
-    34                                  ;  Syntax: Intel
-    35                                  ;  Max page width: 172 columns
-    36                                  ;  Optimal print specification: Landscape, 7-point font, monospace, 172 columns, 8½x11 paper
-    37                                  ;  Assemble: nasm -f elf64 -l perimeter.lis -o perimeter.o perimeter.asm
-    38                                  ;
-    39                                  ;========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6=========7**
+    28                                  ;
+    29                                  ;This file
+    30                                  ;  File name: perimeter.asm
+    31                                  ;  Language: X86-64
+    32                                  ;  Syntax: Intel
+    33                                  ;  Assemble: nasm -f elf64 -l perimeter.lis -o perimeter.o perimeter.asm
+    34                                  ;
+    35                                  ;========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6=========7**
+    36                                  ;
+    37                                  ;Author information
+    38                                  ;  Author name: Rosa Cho
+    39                                  ;  Author email: rkcho317@fullerton.edu
     40                                  ;
-    41                                  ;Author information
-    42                                  ;  Author name: Rosa Cho
-    43                                  ;  Author email: rkcho317@fullerton.edu
-    44                                  ;
-    45                                  ;Program information
-    46                                  ;  Program name: perimeter.asm
-    47                                  ;  Programming languages: X86 with one module in C++
-    48                                  ;  Date program began: 2021-Jan-31
-    49                                  ;  Date of last update: 2021-Feb-12
-    50                                  ;
-    51                                  ;Purpose
-    52                                  ;  The intent of this program is to show some of the basic tools or techniques for working with basic math.
+    41                                  ;Program information
+    42                                  ;  Program name: perimeter.asm
+    43                                  ;  Programming languages: X86 with one module in C++
+    44                                  ;  Date program began: 2021-Jan-31
+    45                                  ;  Date of last update: 2021-Feb-13
+    46                                  ;
+    47                                  ;Purpose
+    48                                  ;  The intent of this program is to show some of the basic tools or techniques for working with basic math.
+    49                                  ;
+    50                                  ;Project information
+    51                                  ;  Project files: rectangle.cpp, perimeter.asm, run.sh
+    52                                  ;  Status: Available for public review.
     53                                  ;
-    54                                  ;Project information
-    55                                  ;  Project files: rectangle.cpp, perimeter.asm, run.sh
-    56                                  ;  Status: Available for public review.
+    54                                  ;Translator information
+    55                                  ;  Linux: nasm -f elf64 -l perimeter.lis -o perimeter.o perimeter.asm
+    56                                  ;
     57                                  ;
-    58                                  ;Translator information
-    59                                  ;  Linux: nasm -f elf64 -l perimeter.lis -o perimeter.o perimeter.asm
-    60                                  ;
+    58                                  ;
+    59                                  ;
+    60                                  ;========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6=========7**
     61                                  ;
-    62                                  ;Format information
-    63                                  ;  Page width: 172 columns
-    64                                  ;  Begin comments: 61
-    65                                  ;  Optimal print specification: Landscape, 7 points, monospace, 8½x11 paper
-    66                                  ;
-    67                                  ;
-    68                                  ;
-    69                                  ;
-    70                                  ;========1=========2=========3=========4=========5=========6=========7=========8=========9=========0=========1=========2=========3=========4=========5=========6=========7**
-    71                                  ;
-    72                                  ;===== Begin code area ====================================================================================================================================================
-    73                                  
-    74                                  extern printf                                               ;External C++ function for writing to standard output device
-    75                                  
-    76                                  extern scanf                                                ;External C++ function for reading from the standard input device
-    77                                  
-    78                                  global perimeter_tools                                      ;Set Global perimeter_tools variables
-    79                                  
-    80                                  segment .data
-    81                                  
-    82                                  ;===== Declare some messages ==============================================================================================================================================
-    83                                  ;The identifiers in this segment are quadword pointers to ascii strings stored in heap space.  They are not variables.  They are not constants.  There are no constants in
-    84                                  ;assembly programming.  There are no variables in assembly programming: the registers assume the role of variables.
-    85                                  
-    86 00000000 546865205838362073-     initialmessage db "The X86 subprogram is now executing.", 10, 0
-    86 00000009 756270726F6772616D-
-    86 00000012 206973206E6F772065-
-    86 0000001B 7865637574696E672E-
-    86 00000024 0A00               
-    87                                  
-    88 00000026 456E74657220746865-     inputheightprompt db "Enter the height: ", 10, 0
-    88 0000002F 206865696768743A20-
-    88 00000038 0A00               
-    89                                  
-    90 0000003A 456E74657220746865-     inputwidthprompt db "Enter the weight: ", 10, 0
-    90 00000043 207765696768743A20-
-    90 0000004C 0A00               
-    91                                  
-    92 0000004E 596F757220696E7075-     outputtestprompt db "Your inputs are height: %5.3lf and width: %5.3lf", 10, 0
-    92 00000057 747320617265206865-
-    92 00000060 696768743A2025352E-
-    92 00000069 336C6620616E642077-
-    92 00000072 696474683A2025352E-
+    62                                  ;===== Begin code area ====================================================================================================================================================
+    63                                  
+    64                                  extern printf                                               ;External C++ function for writing to standard output device
+    65                                  
+    66                                  extern scanf                                                ;External C++ function for reading from the standard input device
+    67                                  
+    68                                  global perimeter_tools                                      ;Set Global perimeter_tools variables
+    69                                  
+    70                                  segment .data
+    71                                  
+    72                                  ;===== Declare some messages ==============================================================================================================================================
+    73 00000000 546865205838362073-     initialmessage db "The X86 subprogram is now executing.", 10, 0
+    74 00000009 756270726F6772616D-
+    75 00000012 206973206E6F772065-
+    76 0000001B 7865637574696E672E-
+    77 00000024 0A00               
+    78                                  
+    79 00000026 456E74657220746865-     inputheightprompt db "Enter the height: ", 10, 0
+    80 0000002F 206865696768743A20-
+    81 00000038 0A00               
+    82                                  
+    83 0000003A 456E74657220746865-     inputwidthprompt db "Enter the weight: ", 10, 0
+    84 00000043 207765696768743A20-
+    85 0000004C 0A00               
+    86                                  
+    87 0000004E 596F757220696E7075-     outputtestprompt db "Your inputs are height: %5.3lf and width: %5.3lf", 10, 0
+    88 00000057 747320617265206865-
+    89 00000060 696768743A2025352E-
+    90 00000069 336C6620616E642077-
+    91 00000072 696474683A2025352E-
     92 0000007B 336C660A00         
     93                                  
     94 00000080 54686520706572696D-     output_peri db "The perimeter is: %5.3lf",10, 0
-    94 00000089 657465722069733A20-
-    94 00000092 25352E336C660A00   
-    95                                  
-    96 0000009A 546865206C656E6774-     output_avel db "The length of the average side is: %5.3lf ", 10, 0
-    96 000000A3 68206F662074686520-
-    96 000000AC 617665726167652073-
-    96 000000B5 6964652069733A2025-
-    96 000000BE 352E336C66200A00   
+    95 00000089 657465722069733A20-
+    96 00000092 25352E336C660A00   
     97                                  
-    98 000000C6 4920686F706520796F-     outputhopeprompt db "I hope you enjoyed your rectangle", 10, 0
-    98 000000CF 7520656E6A6F796564-
-    98 000000D8 20796F757220726563-
-    98 000000E1 74616E676C650A00   
-    99                                  
-   100 000000E9 54686520617373656D-     outputsendmainprompt db "The assembly program will send the perimeter to the main function.", 10, 0
-   100 000000F2 626C792070726F6772-
-   100 000000FB 616D2077696C6C2073-
-   100 00000104 656E64207468652070-
-   100 0000010D 6572696D6574657220-
-   100 00000116 746F20746865206D61-
-   100 0000011F 696E2066756E637469-
-   100 00000128 6F6E2E0A00         
-   101                                  
-   102 0000012D 256C6600                input_hfloat db "%lf",0
+    98 0000009A 546865206C656E6774-     output_avel db "The length of the average side is: %5.3lf ", 10, 0
+    99 000000A3 68206F662074686520-
+   100 000000AC 617665726167652073-
+   101 000000B5 6964652069733A2025-
+   102 000000BE 352E336C66200A00   
    103                                  
-   104 00000131 256C6600                input_wfloat db "%lf",0
-   105                                  
-   106 00000135 0000000000000040        float2 dq 2.0
-   107                                  
-   108 0000013D 0000000000001040        float4 dq 4.0
-   109                                  
-   110                                  segment .bss                            ;Reserved for uninitialized data
-   111                                  
-   112                                  segment .text                           ;Reserved for executing instructions.
-   113                                  
-   114                                  perimeter_tools:
-   115                                  ;==========================================================================================================================================================================
-   116                                  ;===== Begin the application here: show how to input and output floating point numbers ====================================================================================
-   117                                  ;==========================================================================================================================================================================
-   118                                  
-   119 00000000 6A00                    push qword 0
-   120                                  
-   121                                  ;====Display welcome messages====
-   122 00000002 B800000000              mov rax,0
-   123 00000007 48BF-                   mov rdi, initialmessage
-   123 00000009 [0000000000000000] 
-   124 00000011 E8(00000000)            call printf
-   125 00000016 58                      pop rax
-   126                                  
-   127                                  ;====Display input prompt for the height====
-   128 00000017 6A00                    push qword 0
-   129 00000019 B800000000              mov rax, 0
-   130 0000001E 48BF-                   mov rdi, inputheightprompt
-   130 00000020 [2600000000000000] 
-   131 00000028 E8(00000000)            call printf
-   132 0000002D 58                      pop rax
-   133                                  
-   134                                  ;====Enter the height input===
-   135 0000002E 6AFF                    push qword -1
-   136 00000030 B800000000              mov rax, 0
-   137 00000035 48BF-                   mov rdi, input_hfloat
-   137 00000037 [2D01000000000000] 
-   138 0000003F 4889E6                  mov rsi, rsp
-   139 00000042 E8(00000000)            call scanf
-   140 00000047 F2440F101424            movsd xmm10, [rsp]
-   141 0000004D 58                      pop rax
-   142                                  
+   104 000000C6 4920686F706520796F-     outputhopeprompt db "I hope you enjoyed your rectangle", 10, 0
+   105 000000CF 7520656E6A6F796564-
+   106 000000D8 20796F757220726563-
+   107 000000E1 74616E676C650A00   
+   108                                  
+   109 000000E9 54686520617373656D-     outputsendmainprompt db "The assembly program will send the perimeter to the main function.", 10, 0
+   110 000000F2 626C792070726F6772-
+   111 000000FB 616D2077696C6C2073-
+   112 00000104 656E64207468652070-
+   113 0000010D 6572696D6574657220-
+   114 00000116 746F20746865206D61-
+   115 0000011F 696E2066756E637469-
+   116 00000128 6F6E2E0A00         
+   117                                  
+   118 0000012D 256C6600                input_hfloat db "%lf",0
+   119                                  
+   120 00000131 256C6600                input_wfloat db "%lf",0
+   121                                  
+   122 00000135 0000000000000040        float2 dq 2.0
+   123                                  
+   124 0000013D 0000000000001040        float4 dq 4.0
+   125                                  
+   126                                  segment .bss                            ;Reserved for uninitialized data
+   127                                  
+   128                                  segment .text                           ;Reserved for executing instructions.
+   129                                  
+   130                                  perimeter_tools:
+   131                                  ;==========================================================================================================================================================================
+   132                                  ;===== Begin the application here: show how to input and output floating point numbers ====================================================================================
+   133                                  ;==========================================================================================================================================================================
+   134                                  
+   135 00000000 6A00                    push qword 0
+   136                                  
+   137                                  ;====Display welcome messages====
+   138 00000002 B800000000              mov rax,0
+   139 00000007 48BF-                   mov rdi, initialmessage
+   140 00000009 [0000000000000000] 
+   141 00000011 E8(00000000)            call printf
+   142 00000016 58                      pop rax
    143                                  
-   144                                  ;====Display input prompt for the width====
-   145 0000004E 6A00                    push qword 0
-   146 00000050 B800000000              mov rax, 0
-   147 00000055 48BF-                   mov rdi, inputwidthprompt
-   147 00000057 [3A00000000000000] 
-   148 0000005F E8(00000000)            call printf
-   149 00000064 58                      pop rax
-   150                                  
-   151                                  ;====Enter the width input ===
-   152 00000065 B801000000              mov rax, 1
-   153 0000006A 48BF-                   mov rdi, input_wfloat
-   153 0000006C [3101000000000000] 
-   154 00000074 6A00                    push qword 0
-   155 00000076 4889E6                  mov rsi, rsp
-   156 00000079 E8(00000000)            call scanf
-   157 0000007E F2440F101C24            movsd xmm11, [rsp]
-   158 00000084 58                      pop rax
-   159                                  
-   160                                  ;====Calculate Perimeter====
-   161                                  ;Add height to width
-   162 00000085 F2450F10E2              movsd xmm12,xmm10
-   163 0000008A F2450F58E3              addsd xmm12,xmm11
-   164 0000008F F2440F592425-           mulsd xmm12,[float2]
-   164 00000095 [35010000]         
-   165                                  
-   166                                  ;=====Display the Perimeter====
-   167 00000099 6AFF                    push qword -1
-   168 0000009B B801000000              mov rax, 1
-   169 000000A0 48BF-                   mov rdi, output_peri
-   169 000000A2 [8000000000000000] 
-   170 000000AA F2410F10C4              movsd xmm0, xmm12
-   171 000000AF E8(00000000)            call printf
-   172 000000B4 58                      pop rax
-   173                                  
-   174                                  ;====Calculate average length====
-   175 000000B5 F2450F10EC              movsd xmm13, xmm12
-   176 000000BA F2440F5E2C25-           divsd xmm13, [float4]
-   176 000000C0 [3D010000]         
-   177                                  
-   178                                  ;=====Display the average length====
-   179 000000C4 6A00                    push qword 0
-   180 000000C6 B801000000              mov rax, 1
-   181 000000CB 48BF-                   mov rdi, output_avel
-   181 000000CD [9A00000000000000] 
-   182 000000D5 F2410F10C5              movsd xmm0, xmm13
-   183 000000DA E8(00000000)            call printf
-   184 000000DF 58                      pop rax
-   185                                  
-   186                                  ;===Display Goodbye messages====
-   187 000000E0 6A00                    push qword 0
-   188 000000E2 B800000000              mov rax, 0
-   189 000000E7 48BF-                   mov rdi, outputhopeprompt
-   189 000000E9 [C600000000000000] 
-   190 000000F1 E8(00000000)            call printf
-   191 000000F6 58                      pop rax
+   144                                  ;====Display input prompt for the height====
+   145 00000017 6A00                    push qword 0
+   146 00000019 B800000000              mov rax, 0
+   147 0000001E 48BF-                   mov rdi, inputheightprompt
+   148 00000020 [2600000000000000] 
+   149 00000028 E8(00000000)            call printf
+   150 0000002D 58                      pop rax
+   151                                  
+   152                                  ;====Enter the height input===
+   153 0000002E 6AFF                    push qword -1
+   154 00000030 B800000000              mov rax, 0
+   155 00000035 48BF-                   mov rdi, input_hfloat
+   156 00000037 [2D01000000000000] 
+   157 0000003F 4889E6                  mov rsi, rsp
+   158 00000042 E8(00000000)            call scanf
+   159 00000047 F2440F101424            movsd xmm10, [rsp]
+   160 0000004D 58                      pop rax
+   161                                  
+   162                                  
+   163                                  ;====Display input prompt for the width====
+   164 0000004E 6A00                    push qword 0
+   165 00000050 B800000000              mov rax, 0
+   166 00000055 48BF-                   mov rdi, inputwidthprompt
+   167 00000057 [3A00000000000000] 
+   168 0000005F E8(00000000)            call printf
+   169 00000064 58                      pop rax
+   170                                  
+   171                                  ;====Enter the width input ===
+   172 00000065 B801000000              mov rax, 1
+   173 0000006A 48BF-                   mov rdi, input_wfloat
+   174 0000006C [3101000000000000] 
+   175 00000074 6A00                    push qword 0
+   176 00000076 4889E6                  mov rsi, rsp
+   177 00000079 E8(00000000)            call scanf
+   178 0000007E F2440F101C24            movsd xmm11, [rsp]
+   179 00000084 58                      pop rax
+   180                                  
+   181                                  ;====Calculate Perimeter====
+   182                                  ;Add height to width
+   183 00000085 F2450F10E2              movsd xmm12,xmm10
+   184 0000008A F2450F58E3              addsd xmm12,xmm11
+   185 0000008F F2440F592425-           mulsd xmm12,[float2]
+   186 00000095 [35010000]         
+   187                                  ;movsd xmm12, xmm10
+   188                                  ;addsd xmm12, xmm10
+   189                                  ;addsd xmm12, xmm11
+   190                                  ;addsd xmm12, xmm11
+   191                                  
    192                                  
-   193 000000F7 6A00                    push qword 0
-   194 000000F9 B800000000              mov rax, 0
-   195 000000FE 48BF-                   mov rdi, outputsendmainprompt
-   195 00000100 [E900000000000000] 
-   196 00000108 E8(00000000)            call printf
-   197 0000010D 58                      pop rax
-   198                                  
-   199 0000010E F2410F10C4              movsd xmm0, xmm12
+   193                                  ;=====Display the Perimeter====
+   194 00000099 6AFF                    push qword -1
+   195 0000009B B801000000              mov rax, 1
+   196 000000A0 48BF-                   mov rdi, output_peri
+   197 000000A2 [8000000000000000] 
+   198 000000AA F2410F10C4              movsd xmm0, xmm12
+   199 000000AF E8(00000000)            call printf
+   200 000000B4 58                      pop rax
+   201                                  
+   202                                  ;====Calculate average length====
+   203 000000B5 F2450F10EC              movsd xmm13, xmm12
+   204 000000BA F2440F5E2C25-           divsd xmm13, [float4]
+   205 000000C0 [3D010000]         
+   206                                  
+   207                                  ;=====Display the average length====
+   208 000000C4 6A00                    push qword 0
+   209 000000C6 B801000000              mov rax, 1
+   210 000000CB 48BF-                   mov rdi, output_avel
+   211 000000CD [9A00000000000000] 
+   212 000000D5 F2410F10C5              movsd xmm0, xmm13
+   213 000000DA E8(00000000)            call printf
+   214 000000DF 58                      pop rax
+   215                                  
+   216                                  ;===Display Goodbye messages====
+   217 000000E0 6A00                    push qword 0
+   218 000000E2 B800000000              mov rax, 0
+   219 000000E7 48BF-                   mov rdi, outputhopeprompt
+   220 000000E9 [C600000000000000] 
+   221 000000F1 E8(00000000)            call printf
+   222 000000F6 58                      pop rax
+   223                                  
+   224 000000F7 6A00                    push qword 0
+   225 000000F9 B800000000              mov rax, 0
+   226 000000FE 48BF-                   mov rdi, outputsendmainprompt
+   227 00000100 [E900000000000000] 
+   228 00000108 E8(00000000)            call printf
+   229 0000010D 58                      pop rax
+   230                                  
+   231 0000010E F2410F10C4              movsd xmm0, xmm12
